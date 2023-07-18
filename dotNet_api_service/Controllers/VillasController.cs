@@ -10,16 +10,20 @@ namespace dotNet_api_service.Controllers
     public class VillasController : ControllerBase
     {
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> getVillas()
         {
             return Ok(VillaStore.villasList);
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(200, Type = typeof(VillaDTO))]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(400)]
-        public ActionResult getVillas(int id)
+        //[ProducesResponseType(200, Type = typeof(VillaDTO))]
+        //[ProducesResponseType(404)]
+        //[ProducesResponseType(400)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<VillaDTO> getVillas(int id)
         {
             if(id == 0)
             {
