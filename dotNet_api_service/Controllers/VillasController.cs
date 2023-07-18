@@ -1,5 +1,4 @@
-﻿using dotNet_api_service.Models;
-using dotNet_api_service.Models.Data;
+﻿using dotNet_api_service.Models.Data;
 using dotNet_api_service.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,15 +10,30 @@ namespace dotNet_api_service.Controllers
     public class VillasController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<VillaDTO> getVillas()
+        public ActionResult<IEnumerable<VillaDTO>> getVillas()
         {
-            return VillaStore.villasList;
+            return Ok(VillaStore.villasList);
         }
 
         [HttpGet("{id:int}")]
-        public VillaDTO getVillas(int id)
+        [ProducesResponseType(200, Type = typeof(VillaDTO))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public ActionResult getVillas(int id)
         {
-            return VillaStore.villasList.FirstOrDefault(v => v.Id == id);
+            if(id == 0)
+            {
+                return BadRequest();
+            }
+
+            var villa = VillaStore.villasList.FirstOrDefault(v => v.Id == id);
+
+            if(villa == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(villa);
         }
     }
 }
