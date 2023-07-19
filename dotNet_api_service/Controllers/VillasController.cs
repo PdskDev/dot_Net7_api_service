@@ -1,4 +1,5 @@
-﻿using dotNet_api_service.Models.Data;
+﻿using dotNet_api_service.Logging;
+using dotNet_api_service.Models.Data;
 using dotNet_api_service.Models.Dto;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,11 @@ namespace dotNet_api_service.Controllers
     [ApiController]
     public class VillasController : ControllerBase
     {
-        private readonly ILogger<VillasController> _logger;
+        private readonly ILogging _logger;
 
-        public VillasController(ILogger<VillasController> logger)
+        public VillasController(ILogging logger)
         {
-            _logger = logger;
+          _logger = logger;
         }
 
 
@@ -22,7 +23,7 @@ namespace dotNet_api_service.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
-            _logger.LogInformation("Getting all villas");
+            _logger.Log("Get All: Getting all villas", "runtime");
 
             return Ok(VillaStore.villasList);
         }
@@ -35,7 +36,7 @@ namespace dotNet_api_service.Controllers
         {
             if(id == 0)
             {
-                _logger.LogError("Get Villa Error with id " + id);
+                _logger.Log("Get by Id: Get Villa Error with id " + id, "error");
                 return BadRequest();
             }
 
@@ -43,10 +44,11 @@ namespace dotNet_api_service.Controllers
 
             if(villa == null)
             {
-                _logger.LogError("Get Villa is Null");
+                _logger.Log("Get by Id: Get Villa is Null", "error");
                 return NotFound();
             }
 
+            _logger.Log("Get by Id: Get Villa is retrieved", "info");
             return Ok(villa);
         }
 
@@ -63,26 +65,29 @@ namespace dotNet_api_service.Controllers
 
             if (VillaStore.villasList.FirstOrDefault(v => v.Name.ToLower() == villaDTO.Name.ToLower()) != null)
             {
+                _logger.Log("Post: Villa already exist", "error");
                 ModelState.AddModelError("CustomError", "Villa already exists");
                 return BadRequest(ModelState);
             }
 
             if(villaDTO == null)
             {
-                _logger.LogError("Post Villa is Null");
+                _logger.Log("Post: Posted Villa is Null", "error");
                 return BadRequest(villaDTO);
             }
 
             if(villaDTO.Id > 0)
             {
-                _logger.LogError("Post Villa Id is not equal to 0");
+                _logger.Log("Post: Posted Villa Id is not equal to 0", "error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             villaDTO.Id = VillaStore.villasList.OrderByDescending(v => v.Id).FirstOrDefault().Id + 1;
             VillaStore.villasList.Add(villaDTO);
             //return Ok(villaDTO);
-           return CreatedAtRoute("GetVilla", new { id = villaDTO.Id }, villaDTO);
+
+            _logger.Log("Post: New Villa is created with success", "info");
+            return CreatedAtRoute("GetVilla", new { id = villaDTO.Id }, villaDTO);
         }
 
         [HttpDelete("{id:int}", Name = "DeleteVilla")]
@@ -94,6 +99,7 @@ namespace dotNet_api_service.Controllers
 
             if (id == 0)
             {
+                _logger.Log("Delete: Posted Villa Id is not equal to 0", "error");
                 return BadRequest();
             }
 
@@ -101,11 +107,13 @@ namespace dotNet_api_service.Controllers
 
             if (villa == null)
             {
+                _logger.Log("Delete: Posted Villa not found", "error");
                 return NotFound();
             }
 
             VillaStore.villasList.Remove(villa);
 
+            _logger.Log("Delete: Posted Villa has been deleted", "info");
             return NoContent();
         }
 
@@ -118,6 +126,7 @@ namespace dotNet_api_service.Controllers
         {
             if(villaToUpdate == null || id!= villaToUpdate.Id)
             {
+                _logger.Log("Put: Posted Villa is null or is id is different", "error");
                 return BadRequest();
             }
 
@@ -138,6 +147,7 @@ namespace dotNet_api_service.Controllers
         {
             if (villaToPatch == null || id == 0)
             {
+                _logger.Log("Patch: Posted Villa is null or id is null", "error");
                 return BadRequest();
             }
 
@@ -145,6 +155,7 @@ namespace dotNet_api_service.Controllers
 
             if(villa == null)
             {
+                _logger.Log("Patch: Posted Villa not found", "error");
                 return NotFound();
             }
 
@@ -152,6 +163,7 @@ namespace dotNet_api_service.Controllers
 
             if(!ModelState.IsValid)
             {
+                _logger.Log("Patch: ModelState is not valid", "error");
                 return BadRequest(ModelState);
             }
 
