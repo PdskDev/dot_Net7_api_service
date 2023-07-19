@@ -65,7 +65,7 @@ namespace dotNet_api_service.Controllers
 
             if (VillaStore.villasList.FirstOrDefault(v => v.Name.ToLower() == villaDTO.Name.ToLower()) != null)
             {
-                _logger.Log("Post: Villa already exist", "error");
+                _logger.Log("Post: Villa already exist", "warning");
                 ModelState.AddModelError("CustomError", "Villa already exists");
                 return BadRequest(ModelState);
             }
