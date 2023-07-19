@@ -1,7 +1,5 @@
 //using Serilog;
 
-using dotNet_api_service.Logging;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
