@@ -10,10 +10,20 @@ namespace dotNet_api_service.Controllers
     [ApiController]
     public class VillasController : ControllerBase
     {
+        private readonly ILogger<VillasController> _logger;
+
+        public VillasController(ILogger<VillasController> logger)
+        {
+            _logger = logger;
+        }
+
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
+            _logger.LogInformation("Getting all villas");
+
             return Ok(VillaStore.villasList);
         }
 
@@ -25,6 +35,7 @@ namespace dotNet_api_service.Controllers
         {
             if(id == 0)
             {
+                _logger.LogError("Get Villa Error with id " + id);
                 return BadRequest();
             }
 
@@ -32,6 +43,7 @@ namespace dotNet_api_service.Controllers
 
             if(villa == null)
             {
+                _logger.LogError("Get Villa is Null");
                 return NotFound();
             }
 
@@ -57,11 +69,13 @@ namespace dotNet_api_service.Controllers
 
             if(villaDTO == null)
             {
+                _logger.LogError("Post Villa is Null");
                 return BadRequest(villaDTO);
             }
 
             if(villaDTO.Id > 0)
             {
+                _logger.LogError("Post Villa Id is not equal to 0");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
