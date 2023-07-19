@@ -1,5 +1,6 @@
 ﻿using dotNet_api_service.Models.Data;
 using dotNet_api_service.Models.Dto;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotNet_api_service.Controllers
@@ -68,6 +69,52 @@ namespace dotNet_api_service.Controllers
             VillaStore.villasList.Add(villaDTO);
             //return Ok(villaDTO);
            return CreatedAtRoute("GetVilla", new { id = villaDTO.Id }, villaDTO);
+        }
+
+        [HttpDelete("{id:int}", Name = "DeleteVilla")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult DeleteVille(int id)
+        {
+
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+
+            var villa = VillaStore.villasList.FirstOrDefault(v => v.Id == id);
+
+            if (villa == null)
+            {
+                return NotFound();
+            }
+
+            VillaStore.villasList.Remove(villa);
+
+            return NoContent();
+        }
+
+        [HttpPut("{id:int}", Name = "UpdateVilla")]
+        //[ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdateVilla(int id, [FromBody] VillaDTO villaToUpdate)
+        {
+            if(villaToUpdate == null || id!= villaToUpdate.Id)
+            {
+                return BadRequest();
+            }
+
+            var villa = VillaStore.villasList.FirstOrDefault(v => v.Id == villaToUpdate.Id);
+            villa.Name = villaToUpdate.Name;
+            villa.Occupancy = villaToUpdate.Occupancy;
+            villa.SquartFeet = villaToUpdate.SquartFeet;
+
+            //return NoContent();
+            return Ok(villaToUpdate);
+            
         }
     }
 }
