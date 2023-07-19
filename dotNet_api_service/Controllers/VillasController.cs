@@ -1,6 +1,6 @@
 ﻿using dotNet_api_service.Models.Data;
 using dotNet_api_service.Models.Dto;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotNet_api_service.Controllers
@@ -113,8 +113,38 @@ namespace dotNet_api_service.Controllers
             villa.SquartFeet = villaToUpdate.SquartFeet;
 
             //return NoContent();
-            return Ok(villaToUpdate);
-            
+            return Ok(villa);
         }
+
+        [HttpPatch("{id:int}", Name = "UpdatePartialVilla")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdatePartialVilla(int id, [FromBody] JsonPatchDocument<VillaDTO> villaToPatch)
+        {
+            if (villaToPatch == null || id == 0)
+            {
+                return BadRequest();
+            }
+
+            var villa = VillaStore.villasList.FirstOrDefault(v => v.Id == id);
+
+            if(villa == null)
+            {
+                return NotFound();
+            }
+
+            villaToPatch.ApplyTo(villa, ModelState);
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //return NoContent();
+            return Ok(villa);
+        }
+
+
     }
 }
