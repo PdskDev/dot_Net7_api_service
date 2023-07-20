@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotNet_api_service.Models.Data;
 
@@ -11,9 +12,11 @@ using dotNet_api_service.Models.Data;
 namespace dotNet_api_service.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230720092449_demoVillasData")]
+    partial class demoVillasData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +73,7 @@ namespace dotNet_api_service.Migrations
                         {
                             Id = 1,
                             Amenity = "",
-                            CreateDate = new DateTime(2023, 7, 20, 11, 28, 20, 185, DateTimeKind.Local).AddTicks(1925),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Amazing villa",
                             ImageUrl = "https://www.bailypearl.com/wp-content/uploads/2021/05/villa-la-croix-valmer-facade-2-2-2560x1633.jpg",
                             Name = "SeaSide Villa",
@@ -83,7 +86,7 @@ namespace dotNet_api_service.Migrations
                         {
                             Id = 2,
                             Amenity = "",
-                            CreateDate = new DateTime(2023, 7, 20, 11, 28, 20, 185, DateTimeKind.Local).AddTicks(1980),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Amazing villa",
                             ImageUrl = "https://www.villas-melrose.fr/wp-content/themes/villas-melrose/assets/images/hp/bg-contact-grand.jpg",
                             Name = "NearForest Villa",
@@ -96,7 +99,7 @@ namespace dotNet_api_service.Migrations
                         {
                             Id = 3,
                             Amenity = "",
-                            CreateDate = new DateTime(2023, 7, 20, 11, 28, 20, 185, DateTimeKind.Local).AddTicks(1983),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Amazing villa",
                             ImageUrl = "https://www.explorenicecotedazur.com/content/uploads/2021/11/Ephrussi-scaled.jpg",
                             Name = "Sunrise Temple Villa",
@@ -109,7 +112,7 @@ namespace dotNet_api_service.Migrations
                         {
                             Id = 4,
                             Amenity = "",
-                            CreateDate = new DateTime(2023, 7, 20, 11, 28, 20, 185, DateTimeKind.Local).AddTicks(1986),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Amazing villa",
                             ImageUrl = "https://i.ytimg.com/vi/Fw1IBJxcgc4/maxresdefault.jpg",
                             Name = "Moonlight Elegant Palace",
@@ -122,7 +125,7 @@ namespace dotNet_api_service.Migrations
                         {
                             Id = 5,
                             Amenity = "",
-                            CreateDate = new DateTime(2023, 7, 20, 11, 28, 20, 185, DateTimeKind.Local).AddTicks(1989),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Amazing villa",
                             ImageUrl = "https://www.marbella-ev.com/wp-content/uploads/2021/03/Most-Luxury-Villla-in-Marbella.jpg",
                             Name = "BellaPlaza Villa",
@@ -135,7 +138,7 @@ namespace dotNet_api_service.Migrations
                         {
                             Id = 6,
                             Amenity = "",
-                            CreateDate = new DateTime(2023, 7, 20, 11, 28, 20, 185, DateTimeKind.Local).AddTicks(1992),
+                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Amazing villa",
                             ImageUrl = "https://www.villasleona.fr/public/img/big/27099456jpg_6352a08f482b3.jpg",
                             Name = "Paradise Residence Villa",
